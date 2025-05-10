@@ -6,7 +6,10 @@ import AuthService from '../services/AuthService';
 import { ApiError } from '../interface';
 
 const LoginPage: React.FC = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    phoneNumber: ''
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [error, setError] = useState('');
@@ -53,18 +56,26 @@ const LoginPage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Only allow numbers and limit to 10 digits
-    if (/^\d*$/.test(value) && value.length <= 10) {
-      setPhoneNumber(value);
-      setError('');
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
+    if (name === 'phoneNumber') {
+      // Only allow numbers and limit to 10 digits
+      if (/^\d*$/.test(value) && value.length <= 10) {
+        setFormData(prev => ({ ...prev, [name]: value }));
+        setError('');
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
-  const validatePhoneNumber = (number: string): boolean => {
-    if (number.length !== 10) {
+  const validateForm = (): boolean => {
+    if (!formData.name.trim()) {
+      setError('Please enter your name');
+      return false;
+    }
+    if (formData.phoneNumber.length !== 10) {
       setError('Please enter a valid 10-digit phone number');
       return false;
     }
@@ -74,8 +85,7 @@ const LoginPage: React.FC = () => {
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate phone number before making API call
-    if (!validatePhoneNumber(phoneNumber)) {
+    if (!validateForm()) {
       return;
     }
 
@@ -83,10 +93,11 @@ const LoginPage: React.FC = () => {
     setError('');
     
     try {
-      await AuthService.login(phoneNumber);
+      await AuthService.login(formData.phoneNumber, formData.name);
       navigate('/verify-otp', { 
         state: { 
-          phoneNumber,
+          phoneNumber: formData.phoneNumber,
+          name: formData.name,
           from: location.state?.from?.pathname || '/dashboard'
         } 
       });
@@ -118,6 +129,22 @@ const LoginPage: React.FC = () => {
           
           <form onSubmit={handleSendOTP} className="space-y-6">
             <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                Your Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Enter your name"
+                className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                 WhatsApp Number
               </label>
@@ -125,8 +152,9 @@ const LoginPage: React.FC = () => {
                 <input
                   type="tel"
                   id="phone"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
                   placeholder="+91 98765 43210"
                   className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
@@ -136,10 +164,14 @@ const LoginPage: React.FC = () => {
                 We'll send you a verification code via WhatsApp
               </p>
             </div>
+
+            {error && (
+              <p className="text-red-500 text-sm">{error}</p>
+            )}
             
             <button
               type="submit"
-              disabled={isLoading || !phoneNumber}
+              disabled={isLoading || !formData.phoneNumber || !formData.name}
               className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-[#4C7F7F] hover:bg-[#3d6666] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C7F7F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
               {isLoading ? (

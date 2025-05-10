@@ -13,8 +13,8 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
       
       <div className="relative flex flex-col w-full max-w-xs h-full bg-white">
         <div className="px-4 pt-5 pb-4 flex items-center justify-between">
-          <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            ExpenseShare
+          <span className="text-xl font-bold text-[#4c7f7f]">
+            Trakeer
           </span>
           <button
             className="rounded-md text-gray-500 hover:text-gray-900 focus:outline-none"
@@ -27,12 +27,12 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
         <div className="flex-1 pt-2 pb-4 overflow-y-auto">
           <nav className="px-2 space-y-1">
             <NavLink 
-              to="/" 
+              to="/dashboard" 
               className={({ isActive }) => 
                 `flex items-center px-4 py-3 text-sm font-medium rounded-md transition-all duration-200 ${
                   isActive 
-                    ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 shadow-sm' 
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-[#4c7f7f] text-white' 
+                    : 'text-[#4c7f7f] hover:bg-gray-100'
                 }`
               }
               onClick={onClose}
@@ -46,8 +46,8 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
               className={({ isActive }) => 
                 `flex items-center px-4 py-3 text-sm font-medium rounded-md transition-all duration-200 ${
                   isActive 
-                    ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 shadow-sm' 
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-[#4c7f7f] text-white' 
+                    : 'text-[#4c7f7f] hover:bg-gray-100'
                 }`
               }
               onClick={onClose}

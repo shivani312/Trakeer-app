@@ -18,12 +18,12 @@ interface LoginResponse {
 }
 
 class AuthService {
-  static async login(phoneNumber: string): Promise<LoginResponse> {
+  static async login(phoneNumber: string, name: string): Promise<LoginResponse> {
     // eslint-disable-next-line no-useless-catch
     try {
       const response = await HttpService.post<LoginResponse>(
         '/auth/send-otp',
-        { phone:'+91'+phoneNumber },
+        { phone: '+91' + phoneNumber, name },
         {},
         { isAccessTokenRequire: false }
       );

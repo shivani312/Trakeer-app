@@ -36,7 +36,6 @@ export interface Notification {
 }
 
 export interface AppState {
-  currentUser: User | null;
   groups: Group[];
   selectedGroup: Group | null;
   notifications: Notification[];

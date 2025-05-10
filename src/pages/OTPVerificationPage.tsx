@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -11,19 +11,14 @@ const OTPVerificationPage: React.FC = () => {
   const { login } = useAuth();
   const [otp, setOtp] = useState(['', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
-  const [resendTimer, setResendTimer] = useState(30);
   const [error, setError] = useState('');
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const phoneNumber = location.state?.phoneNumber || '';
   const redirectPath =  '/dashboard';
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setResendTimer((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+
+
 
   const handleChange = (index: number, value: string) => {
     if (value.length <= 1 && /^\d*$/.test(value)) {
@@ -76,16 +71,7 @@ const OTPVerificationPage: React.FC = () => {
     }
   };
 
-  const handleResendOTP = async () => {
-    try {
-      await AuthService.login(phoneNumber);
-      setResendTimer(30);
-      setError('');
-    } catch (err) {
-      const apiError = err as ApiError;
-      setError(apiError.message || 'Failed to resend OTP. Please try again.');
-    }
-  };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -139,19 +125,6 @@ const OTPVerificationPage: React.FC = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <button
-            onClick={handleResendOTP}
-            disabled={resendTimer > 0}
-            className="text-sm text-[#4C7F7F] hover:text-[#3d6666] disabled:text-gray-400 disabled:cursor-not-allowed"
-          >
-            {resendTimer > 0 ? (
-              `Resend code in ${resendTimer}s`
-            ) : (
-              'Resend code'
-            )}
-          </button>
-        </div>
 
         {error && (
           <div className="mt-6 text-center text-red-500">

@@ -1,25 +1,64 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppState } from '../../context/AppStateContext';
 import { ArrowLeft, UserPlus } from 'lucide-react';
+import HttpService from '../../services/httpService';
+import { ApiError } from '../../interface';
+
+interface AddMemberResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    id: string;
+    name: string;
+    phoneNumber: string;
+  };
+}
 
 const CreateGroupForm: React.FC = () => {
   const navigate = useNavigate();
-  const { createGroup } = useAppState();
+  // const { createGroup } = useAppState();
   const [formData, setFormData] = useState({
     name: '',
     phoneNumber: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phoneNumber.trim()) {
       setError('Please fill in all fields');
       return;
     }
-    createGroup(formData.name, formData.phoneNumber);
-    navigate('/groups');
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Call the API to add member
+      const response = await HttpService.post<AddMemberResponse>(
+        '/family/invite',
+        { 
+          name: formData.name,
+          phone: '+91' + formData.phoneNumber 
+        },
+        {},
+        { isAccessTokenRequire: true }
+      );
+
+      if (response.success) {
+        // Create group with the new member
+        // createGroup(formData.name, '');
+        navigate('/groups');
+      } else {
+        setError(response.message || 'Failed to add member');
+      }
+    } catch (error) {
+      const apiError = error as ApiError;
+      setError(apiError.message || 'Failed to add member. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,10 +109,20 @@ const CreateGroupForm: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center px-4 py-2 bg-[#4c7f7f] text-white rounded-md text-sm font-medium hover:bg-[#3d6666] transition-all duration-200 shadow-md"
+            disabled={isLoading}
+            className="w-full flex items-center justify-center px-4 py-2 bg-[#4c7f7f] text-white rounded-md text-sm font-medium hover:bg-[#3d6666] transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <UserPlus className="h-4 w-4 mr-2" />
-            Add Member
+            {isLoading ? (
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Adding Member...
+              </div>
+            ) : (
+              <>
+                <UserPlus className="h-4 w-4 mr-2" />
+                Add Member
+              </>
+            )}
           </button>
         </div>
       </form>

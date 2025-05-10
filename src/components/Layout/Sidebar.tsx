@@ -14,8 +14,7 @@ const Sidebar: React.FC = () => {
       
       <nav className="flex-1 px-4 space-y-1">
         <NavLink
-          to="/"
-          end
+          to="/dashboard"
           className={({ isActive }) =>
             `flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
               isActive
