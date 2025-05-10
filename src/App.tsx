@@ -12,6 +12,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from './pages/LoginPage';
 import OTPVerificationPage from './pages/OTPVerificationPage';
 import NotificationContainer from './components/Notification/NotificationContainer';
+import PublicRoute from './components/publicRoute';
 
 function App() {
   return (
@@ -19,8 +20,22 @@ function App() {
       <AppStateProvider>
         <Router>
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/verify-otp" element={<OTPVerificationPage />} />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <LoginPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/verify-otp"
+              element={
+                <PublicRoute>
+                  <OTPVerificationPage />
+                </PublicRoute>
+              }
+            />
             <Route path="/" element={
               <ProtectedRoute>
                 <AppLayout />
