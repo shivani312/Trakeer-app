@@ -97,7 +97,7 @@ const OTPVerificationPage: React.FC = () => {
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
-          <Shield className="h-8 w-8 text-blue-600" />
+          <Shield className="h-8 w-8 text-[#4C7F7F]" />
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Verify your number</h2>
@@ -126,7 +126,7 @@ const OTPVerificationPage: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading || otp.some(digit => !digit)}
-            className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-[#4C7F7F] hover:bg-[#3d6666] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C7F7F] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <div className="flex items-center">
@@ -143,7 +143,7 @@ const OTPVerificationPage: React.FC = () => {
           <button
             onClick={handleResendOTP}
             disabled={resendTimer > 0}
-            className="text-sm text-blue-600 hover:text-blue-500 disabled:text-gray-400 disabled:cursor-not-allowed"
+            className="text-sm text-[#4C7F7F] hover:text-[#3d6666] disabled:text-gray-400 disabled:cursor-not-allowed"
           >
             {resendTimer > 0 ? (
               `Resend code in ${resendTimer}s`
