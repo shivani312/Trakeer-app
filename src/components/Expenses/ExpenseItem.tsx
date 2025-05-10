@@ -1,6 +1,6 @@
 import React from 'react';
 import { Expense } from '../../types';
-import { Tag, Calendar, DollarSign } from 'lucide-react';
+import { Tag, Calendar } from 'lucide-react';
 
 interface ExpenseItemProps {
   expense: Expense;
@@ -28,8 +28,8 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expense, createdByName }) => 
       <div className="flex justify-between items-start mb-2">
         <h4 className="text-lg font-medium text-gray-900">{expense.description}</h4>
         <div className="flex items-center text-lg font-semibold text-green-600">
-          <DollarSign className="h-4 w-4 mr-1" />
-          {expense.amount.toFixed(2)}
+          {/* <DollarSign className="h-4 w-4 mr-1" /> */}
+          {expense.amount.toFixed(2)} Rs
         </div>
       </div>
       

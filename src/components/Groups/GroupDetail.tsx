@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Group, User, Expense } from '../../types';
-import { Users, Plus, DollarSign, Send, UserPlus, X } from 'lucide-react';
+import { Group,  Expense } from '../../types';
+import {  Send, X } from 'lucide-react';
 import ExpenseList from '../Expenses/ExpenseList';
-import AddExpenseForm from '../Expenses/AddExpenseForm';
+// import AddExpenseForm from '../Expenses/AddExpenseForm';
 
 interface GroupDetailProps {
   group: Group;
@@ -13,9 +13,7 @@ interface GroupDetailProps {
 
 const GroupDetail: React.FC<GroupDetailProps> = ({ 
   group, 
-  onAddMember, 
-  onRemoveMember, 
-  onAddExpense 
+  onAddMember,  
 }) => {
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [showAddMember, setShowAddMember] = useState(false);
@@ -29,10 +27,10 @@ const GroupDetail: React.FC<GroupDetailProps> = ({
     setShowAddMember(false);
   };
   
-  const handleAddExpense = (expense: Omit<Expense, 'id' | 'groupId' | 'createdBy'>) => {
-    onAddExpense(expense);
-    setShowAddExpense(false);
-  };
+  // const handleAddExpense = (expense: Omit<Expense, 'id' | 'groupId' | 'createdBy'>) => {
+  //   onAddExpense(expense);
+  //   setShowAddExpense(false);
+  // };
   
   return (
     <div className="max-w-4xl mx-auto">
@@ -43,11 +41,11 @@ const GroupDetail: React.FC<GroupDetailProps> = ({
           
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex items-center">
-              <DollarSign className="h-5 w-5 text-green-500 mr-2" />
-              <span className="text-gray-900 font-medium">Total: ${totalExpenses.toFixed(2)}</span>
+              {/* <DollarSign className="h-5 w-5 text-green-500 mr-2" /> */}
+              <span className="text-gray-900 font-medium">Total:  {totalExpenses.toFixed(2)} Rs</span>
             </div>
             
-            <div className="flex space-x-2">
+            {/* <div className="flex space-x-2">
               <button
                 onClick={() => setShowAddExpense(true)}
                 className="flex items-center px-3 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors"
@@ -62,7 +60,7 @@ const GroupDetail: React.FC<GroupDetailProps> = ({
                 <UserPlus className="h-4 w-4 mr-1" />
                 Add Member
               </button>
-            </div>
+            </div> */}
           </div>
           
           {showAddExpense && (
@@ -73,7 +71,7 @@ const GroupDetail: React.FC<GroupDetailProps> = ({
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <AddExpenseForm onAddExpense={handleAddExpense} />
+              {/* <AddExpenseForm onAddExpense={handleAddExpense} /> */}
             </div>
           )}
           
@@ -130,12 +128,12 @@ const GroupDetail: React.FC<GroupDetailProps> = ({
                   </div>
                 </div>
                 
-                <button
+                {/* <button
                   onClick={() => onRemoveMember(member.id)}
                   className="text-red-600 hover:text-red-800"
                 >
                   <X className="h-5 w-5" />
-                </button>
+                </button> */}
               </div>
             ))}
           </div>
