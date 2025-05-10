@@ -18,7 +18,6 @@ const mockGroups: Group[] = [
     createdBy: 'user1',
     createdAt: new Date().toISOString(),
     members: [
-      mockUser,
       {
         id: 'user2',
         name: 'Jane Doe',
@@ -55,7 +54,7 @@ const mockGroups: Group[] = [
     createdBy: 'user1',
     createdAt: new Date().toISOString(),
     members: [
-      mockUser,
+      
       {
         id: 'user3',
         name: 'Mike Smith',

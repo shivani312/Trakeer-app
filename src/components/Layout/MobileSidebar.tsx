@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Home, Users, UserPlus, Settings, LogOut } from 'lucide-react';
+import { X, Home, Users, LogOut } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 interface MobileSidebarProps {
@@ -13,7 +13,9 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
       
       <div className="relative flex flex-col w-full max-w-xs h-full bg-white">
         <div className="px-4 pt-5 pb-4 flex items-center justify-between">
-          <span className="text-xl font-semibold text-blue-600">ExpenseShare</span>
+          <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            ExpenseShare
+          </span>
           <button
             className="rounded-md text-gray-500 hover:text-gray-900 focus:outline-none"
             onClick={onClose}
@@ -27,10 +29,10 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
             <NavLink 
               to="/" 
               className={({ isActive }) => 
-                `flex items-center px-4 py-3 text-sm font-medium rounded-md ${
+                `flex items-center px-4 py-3 text-sm font-medium rounded-md transition-all duration-200 ${
                   isActive 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 shadow-sm' 
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                 }`
               }
               onClick={onClose}
@@ -42,53 +44,23 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
             <NavLink 
               to="/groups" 
               className={({ isActive }) => 
-                `flex items-center px-4 py-3 text-sm font-medium rounded-md ${
+                `flex items-center px-4 py-3 text-sm font-medium rounded-md transition-all duration-200 ${
                   isActive 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 shadow-sm' 
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                 }`
               }
               onClick={onClose}
             >
               <Users className="mr-3 h-5 w-5" />
-              My Groups
-            </NavLink>
-            
-            <NavLink 
-              to="/invites" 
-              className={({ isActive }) => 
-                `flex items-center px-4 py-3 text-sm font-medium rounded-md ${
-                  isActive 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`
-              }
-              onClick={onClose}
-            >
-              <UserPlus className="mr-3 h-5 w-5" />
-              Invitations
-            </NavLink>
-            
-            <NavLink 
-              to="/settings" 
-              className={({ isActive }) => 
-                `flex items-center px-4 py-3 text-sm font-medium rounded-md ${
-                  isActive 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`
-              }
-              onClick={onClose}
-            >
-              <Settings className="mr-3 h-5 w-5" />
-              Settings
+              Members
             </NavLink>
           </nav>
         </div>
         
         <div className="px-4 py-4 border-t border-gray-200">
           <button 
-            className="flex items-center px-4 py-3 text-sm font-medium text-red-600 rounded-md hover:bg-red-50 w-full"
+            className="flex items-center px-4 py-3 text-sm font-medium text-red-600 rounded-md hover:bg-red-50 transition-all duration-200 w-full"
             onClick={onClose}
           >
             <LogOut className="mr-3 h-5 w-5" />

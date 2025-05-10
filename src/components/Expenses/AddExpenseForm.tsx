@@ -2,26 +2,27 @@ import React, { useState } from 'react';
 import { Expense } from '../../types';
 
 interface AddExpenseFormProps {
-  onAddExpense: (expense: Omit<Expense, 'id' | 'groupId' | 'createdBy'>) => void;
+  onAddExpense: (expense: Omit<Expense, 'id'>) => void;
+  groupId: string;
 }
 
-const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense }) => {
+const categories = [
+  'Food',
+  'Transportation',
+  'Entertainment',
+  'Utilities',
+  'Shopping',
+  'Health',
+  'Other'
+];
+
+const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense, groupId }) => {
   const [formData, setFormData] = useState({
     amount: '',
-    description: '',
-    category: 'Food',
+    category: categories[0],
     date: new Date().toISOString().split('T')[0],
+    description: ''
   });
-  
-  const categories = [
-    'Food',
-    'Transportation',
-    'Entertainment',
-    'Utilities',
-    'Shopping',
-    'Health',
-    'Other'
-  ];
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -30,26 +31,23 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense }) => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     onAddExpense({
+      ...formData,
       amount: parseFloat(formData.amount),
-      description: formData.description,
-      category: formData.category,
-      date: formData.date,
+      createdBy: 'current-user-id', // This should come from auth context
+      groupId
     });
-    
-    // Reset form
     setFormData({
       amount: '',
-      description: '',
-      category: 'Food',
+      category: categories[0],
       date: new Date().toISOString().split('T')[0],
+      description: ''
     });
   };
   
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
             Amount ($)
@@ -62,7 +60,7 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense }) => {
             min="0.01"
             value={formData.amount}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="input-field"
             placeholder="0.00"
             required
           />
@@ -77,7 +75,7 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense }) => {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="input-field"
             required
           >
             {categories.map(category => (
@@ -96,7 +94,7 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense }) => {
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="input-field"
             required
           />
         </div>
@@ -111,7 +109,7 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense }) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="input-field"
             placeholder="Grocery shopping"
             required
           />
@@ -121,7 +119,7 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ onAddExpense }) => {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="btn-secondary"
         >
           Add Expense
         </button>
