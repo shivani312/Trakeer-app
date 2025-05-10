@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Wallet, Send } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -8,10 +8,34 @@ import { ApiError } from '../interface';
 const LoginPage: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useAuth();
+
+  const carouselData = [
+    {
+      image: "https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg",
+      title: "Track Together, Save Together",
+      description: "From chai bills to mutual funds – stay on top of your finances without spreadsheets"
+    },
+    {
+      image: "https://images.pexels.com/photos/7654579/pexels-photo-7654579.jpeg",
+      title: "Family Finances Made Simple",
+      description: "Track your paisa like a pro — with an app so easy, even Dad will use it"
+    },
+    {
+      image: "https://images.pexels.com/photos/4475523/pexels-photo-4475523.jpeg",
+      title: "Smart Money Management",
+      description: "When 'thoda adjust kar lenge' needs actual planning"
+    },
+    {
+      image: "https://images.pexels.com/photos/6289065/pexels-photo-6289065.jpeg",
+      title: "Crystal Clear Expenses",
+      description: "No more 'where did all the money go?' — now it's all in the app"
+    }
+  ];
 
   // Redirect if already authenticated
   React.useEffect(() => {
@@ -20,6 +44,15 @@ const LoginPage: React.FC = () => {
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, navigate, location]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % carouselData.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -71,13 +104,16 @@ const LoginPage: React.FC = () => {
       <div className="flex-1 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
           <div className="flex items-center mb-8">
-            <Wallet className="h-8 w-8 text-blue-600 mr-2" />
-            <h1 className="text-2xl font-bold text-gray-900">ExpenseShare</h1>
+            <Wallet className="h-10 w-10 text-[#4C7F7F] mr-3" />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">FinBuddy</h1>
+              <p className="text-sm text-gray-600">Money made simple for everyone</p>
+            </div>
           </div>
           
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Welcome to FinBuddy</h2>
           <p className="text-gray-600 mb-8">
-            Enter your WhatsApp number to continue managing expenses with your groups.
+            From college students to grandparents — manage money together, effortlessly.
           </p>
           
           <form onSubmit={handleSendOTP} className="space-y-6">
@@ -90,21 +126,21 @@ const LoginPage: React.FC = () => {
                   type="tel"
                   id="phone"
                   value={phoneNumber}
-                  onChange={handlePhoneChange}
-                  placeholder="Enter 10 digit mobile number"
-                  className={`block w-full px-4 py-3 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="+91 98765 43210"
+                  className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
-                {error && (
-                  <p className="mt-1 text-sm text-red-500">{error}</p>
-                )}
               </div>
+              <p className="mt-2 text-sm text-gray-500">
+                We'll send you a verification code via WhatsApp
+              </p>
             </div>
             
             <button
               type="submit"
-              disabled={isLoading || !phoneNumber || phoneNumber.length < 10}
-              className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading || !phoneNumber}
+              className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-[#4C7F7F] hover:bg-[#3d6666] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C7F7F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
               {isLoading ? (
                 <div className="flex items-center">
@@ -114,37 +150,52 @@ const LoginPage: React.FC = () => {
               ) : (
                 <div className="flex items-center">
                   <Send className="h-4 w-4 mr-2" />
-                  Send OTP
+                  Continue with WhatsApp
                 </div>
               )}
             </button>
           </form>
-          
-          {/* <p className="mt-6 text-center text-sm text-gray-600">
-            By continuing, you agree to our{' '}
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-              Terms of Service
-            </a>{' '}
-            and{' '}
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-              Privacy Policy
-            </a>
-          </p> */}
         </div>
       </div>
       
-      {/* Image Section */}
-      <div className="hidden md:flex md:flex-1 bg-gradient-to-br from-blue-500 to-blue-600 items-center justify-center p-8">
-        <div className="max-w-md text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">Track Expenses Together</h2>
-          <p className="text-lg text-blue-100">
-            Split bills, manage group expenses, and stay on top of your finances with family and friends.
-          </p>
-          <img
-            src="https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg"
-            alt="Family managing expenses"
-            className="mt-8 rounded-lg shadow-xl"
-          />
+      {/* Carousel Section */}
+      <div className="hidden md:flex md:flex-1 bg-gradient-to-br from-[#4C7F7F] to-[#3d6666] relative overflow-hidden">
+        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        
+        <div className="relative w-full h-full flex items-center justify-center p-12">
+          <div className="max-w-lg w-full">
+            {carouselData.map((slide, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ${
+                  currentSlide === index ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <div className="text-center">
+                  <h2 className="text-3xl font-bold text-white mb-4">{slide.title}</h2>
+                  <p className="text-xl text-blue-100 mb-8">{slide.description}</p>
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="rounded-lg shadow-2xl max-w-md mx-auto transition-transform duration-1000 hover:scale-105"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Carousel Indicators */}
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-2">
+          {carouselData.map((_, index) => (
+            <button
+              key={index}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                currentSlide === index ? 'bg-white w-8' : 'bg-white/50'
+              }`}
+              onClick={() => setCurrentSlide(index)}
+            />
+          ))}
         </div>
       </div>
     </div>
