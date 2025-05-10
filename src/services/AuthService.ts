@@ -22,8 +22,8 @@ class AuthService {
     // eslint-disable-next-line no-useless-catch
     try {
       const response = await HttpService.post<LoginResponse>(
-        '/auth/login',
-        { phoneNumber },
+        '/auth/send-otp',
+        { phone:'+91'+phoneNumber },
         {},
         { isAccessTokenRequire: false }
       );
@@ -44,7 +44,7 @@ class AuthService {
     try {
       const response = await HttpService.post<LoginResponse>(
         '/auth/verify-otp',
-        { phoneNumber, otp },
+        { phone:'+91'+phoneNumber, code:otp },
         {},
         { isAccessTokenRequire: false }
       );
