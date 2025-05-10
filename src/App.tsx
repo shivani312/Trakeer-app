@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AppStateProvider } from './context/AppStateContext';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
