@@ -1,15 +1,17 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Users, LogOut } from 'lucide-react';
-import { useAppState } from '../../context/AppStateContext';
 
 const Sidebar: React.FC = () => {
-  const { signOut } = useAppState();
-
+  const navigate = useNavigate();
+  const signOut = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
   return (
     <div className="h-full bg-white border-r border-gray-200 w-64 flex flex-col">
       <div className="p-6">
-        <h2 className="text-2xl font-bold text-[#4c7f7f]">Trakeer</h2>
+        <h2 className="text-2xl font-bold text-[#4c7f7f]">FinBuddy</h2>
       </div>
       
       <nav className="flex-1 px-4 space-y-1">

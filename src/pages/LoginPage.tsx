@@ -51,7 +51,7 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselData.length);
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, []);

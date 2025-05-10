@@ -14,7 +14,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
       <div className="relative flex flex-col w-full max-w-xs h-full bg-white">
         <div className="px-4 pt-5 pb-4 flex items-center justify-between">
           <span className="text-xl font-bold text-[#4c7f7f]">
-            Trakeer
+          FinBuddy
           </span>
           <button
             className="rounded-md text-gray-500 hover:text-gray-900 focus:outline-none"
