@@ -26,7 +26,7 @@ function App() {
                 <AppLayout />
               </ProtectedRoute>
             }>
-              <Route index element={<Dashboard />} />
+              <Route path='/dashboard' element={<Dashboard />} />
               <Route path="groups" element={<GroupsPage />} />
               <Route path="groups/new" element={<CreateGroupPage />} />
               <Route path="groups/:groupId" element={<GroupPage />} />

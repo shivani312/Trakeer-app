@@ -15,7 +15,7 @@ const OTPVerificationPage: React.FC = () => {
   const [error, setError] = useState('');
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const phoneNumber = location.state?.phoneNumber || '';
-  const redirectPath = location.state?.from || '/dashboard';
+  const redirectPath =  '/dashboard';
 
   useEffect(() => {
     const timer = setInterval(() => {
